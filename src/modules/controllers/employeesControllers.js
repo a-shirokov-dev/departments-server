@@ -1,7 +1,7 @@
 const Employee = require('../../db/models/employees');
 
 module.exports.getEmployees = async (req, res, next) => {
-	const departmentName = { currentDepartment: req.department.name }
+	const departmentName = { currentDepartment: req.department._id }	//	_id
 
   Department.find(departmentName).then(result => {
 		res.send({data: result});
@@ -15,7 +15,7 @@ module.exports.createEmployee = async (req, res, next) => {
 		req.body.currentDepartment = req.department.name;
 		const employee = new Employee(req.body);
 		employee.save().then(result => {	//	may be remove this result?
-			Employee.find({ currentDepartment: req.department.name }).then(result => {
+			Employee.find({ currentDepartment: req.department.name }).then(result => {	//	_id
 				res.send({ data: result });
 			});
 		});

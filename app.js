@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const app = express();
 
 const PORT = process.env.PORT || 8000;
-const visitApiRoutes = require("./src/modules/routes/visitRoutes");
-const userApiRoutes = require("./src/modules/routes/userRoutes");
+const departmentsApiRoutes = require("./src/modules/routes/departmentsRoutes");
+const employeesApiRoutes = require("./src/modules/routes/employeesRoutes");
 const url = "mongodb+srv://admin:intern-admin@cluster1.oueg2.mongodb.net/departments-db?retryWrites=true&w=majority"
 
 const startServer = async () => {
@@ -18,11 +18,11 @@ const startServer = async () => {
 
     app.use(cors());
     app.use(express.json());
-    app.use("/", visitApiRoutes);
-    app.use("/", userApiRoutes);
+    app.use("/", departmentsApiRoutes);
+    app.use("/", employeesApiRoutes);
 
     app.listen(PORT, () => {
-      console.log(`Hospital server listening on port ${PORT}!`);
+      console.log(`Departments server listening on port ${PORT}!`);
     });
   } catch (err) {console.error(err)}
 }

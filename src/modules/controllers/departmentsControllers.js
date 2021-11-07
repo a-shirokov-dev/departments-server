@@ -27,11 +27,32 @@ module.exports.createDepartment = async (req, res, next) => {
 };
 
 module.exports.editDepartment = async (req, res, next) => {
-
+	const noAllFields = false;
+	if (reqBodyIsValid(req.body, noAllFields)) {
+		Department.updateOne({ _id: req.body._id }, req.body).then(result => {
+			Department.find().then(result => {
+				res.send({ data: result });
+			});
+		});
+	} else {
+		res.status(422).send({
+			message: 'Error! Fill some or all fields!'
+		});
+	}
 };
 
 module.exports.deleteDepartment = async (req, res, next) => {
-  
+  if (req.query._id) {
+		Department.deleteOne({ _id: req.query._id}).then(result => {
+			Department.find().then(result => {
+				res.send({ data: result});
+			});
+		});
+	} else {
+		res.status(422).send({
+			message: 'Error! Param is not correct!'
+		});
+	}  
 };
 
 const reqBodyIsValid = (reqBody, fillAllFields) => {
