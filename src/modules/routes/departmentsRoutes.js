@@ -8,9 +8,9 @@ const {
   deleteDepartment
 } = require('../controllers/departmentsControllers');
 
-routerDepartment.get('/getDepartments', getDepartments);
-routerDepartment.post('/createDepartment', createDepartment);
-routerDepartment.patch('/editDepartment', editDepartment);
-routerDepartment.delete('/deleteDepartment', deleteDepartment);
+routerDepartment.get('/departments', getDepartments);
+routerDepartment.post('/department/add', createDepartment);
+routerDepartment.patch('/department/edit', editDepartment);
+routerDepartment.delete('/department/delete', deleteDepartment);
 
 module.exports = routerDepartment;
