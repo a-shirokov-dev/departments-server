@@ -38,9 +38,8 @@ module.exports.editEmployee = async (req, res, next) => {
 	if (reqBodyIsValid(req.body, noAllFields)) {
 		Employee.updateOne({ _id: req.body._id }, req.body)
 			.then(result => {
-				Employee.find({ _id: req.body._id }).then(result => {
-					res.send({ data: result });
-				});
+				console.log(data)
+				res.send({ data: result });
 			});
 	} else {
 		res.status(422).send({
