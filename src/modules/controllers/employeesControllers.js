@@ -36,13 +36,19 @@ module.exports.createEmployee = async (req, res, next) => {
 module.exports.editEmployee = async (req, res, next) => {
 	const noAllFields = false;
 	if (reqBodyIsValid(req.body, noAllFields)) {
-		Employee.updateOne({ _id: req.body._id }, req.body)
-			.then(result => {
-				console.log(data)
-				res.send({ data: result });
-			});
+		Employee.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (_err, doc) => {
+			if (!doc) {
+				return res.status(404).send({
+					message:  "Employee doesn't exist",
+				});
+			}
+			res.status(200).send(doc);
+		}).then(result => {
+			console.log(result)
+			res.send({ data: result });
+		})
 	} else {
-		res.status(422).send({
+		res.status(400).send({
 			message: 'Error! Fill some or all fields!'
 		});
 	}

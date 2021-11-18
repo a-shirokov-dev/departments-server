@@ -36,14 +36,19 @@ module.exports.createDepartment = async (req, res, next) => {
 module.exports.editDepartment = async (req, res, next) => {
 	const noAllFields = false;
 	if (reqBodyIsValid(req.body, noAllFields)) {
-		Department.updateOne({ _id: req.body._id }, req.body)
-			.then(result => {	//	read doc
-				Department.find().then(result => {
-					res.send({ data: result });
-				});	//	return object to front
-			});
+		Department.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (_err, doc) => {
+			if (!doc) {
+				return res.status(404).send({
+          message: "Department doesn't exist",
+        });
+			}
+			res.status(200).send(doc);
+		}).then(result => {
+			console.log(result)
+			res.send({ data: result });			
+		})
 	} else {
-		res.status(422).send({
+		res.status(400).send({
 			message: 'Error! Fill some or all fields!'
 		});
 	}

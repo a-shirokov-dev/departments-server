@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
+const employeeValidation = require('../../modules/middleware/middleware');
 
 const employeeSchema = new Schema({
   email: {type: String, required: true, unique: true},
