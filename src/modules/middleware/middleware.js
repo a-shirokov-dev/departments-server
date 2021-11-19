@@ -1,10 +1,8 @@
-// const jwt = require('jsonwebtoken');
-// const key = require('../keys/keys');
 const Joi = require('joi')
 
 module.exports.departmentValidation = async (req, res, next) => {
   const schema = Joi.object({
-    name: Joi.string().alphanum().required(),
+    name: Joi.string().required(),
     description: Joi.string().required()
   })
   const options = {
@@ -26,9 +24,9 @@ module.exports.departmentValidation = async (req, res, next) => {
 module.exports.employeeValidation = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required(),
-    name: Joi.string().alphanum().required(),
+    name: Joi.string().required(),
     age: Joi.number().required(),
-    position: Joi.string().alphanum().required()
+    position: Joi.string().required()
   })
   const options = {
     abortEarly: false, // include all errors
@@ -41,18 +39,7 @@ module.exports.employeeValidation = (req, res, next) => {
     next(`Validation error: ${error.details.map(x => x.message).join(', ')}`);
   } else {
     // on success replace req.body with validated value and trigger next middleware function
-    req.body = value;
+    req.body = { ...value, department: req.body.department };
     next();
   }
 }
-
-// module.exports = (req, res, next) => {
-//   if (req.method === 'OPTIONS') {
-//     next();
-//   }
-//   try {
-
-//   } catch (err) {
-
-//   }
-// }

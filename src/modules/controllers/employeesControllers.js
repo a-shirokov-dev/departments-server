@@ -1,98 +1,53 @@
-const Employee = require('../../db/models/employees');
+const Employee = require("../../db/models/employees");
 
 module.exports.getEmployees = async (req, res, next) => {
-	Employee.find({ department: req.query.department })
-		.populate("department")
-		.then(result => {
-			res.send({ data: result });
-		});
+  Employee.find({ department: req.params.department })
+    .populate("department")
+    .then((result) => {
+      res.status(200).send({
+        status: 200,
+        data: result,
+      });
+    });
 };
 
 module.exports.createEmployee = async (req, res, next) => {
-	Employee.find({ email: req.body.email })
-		.then(result => {
-			if (result.length !== 0)
-				return res.status(422).send({
-					message: 'Email is already taken!'
-				});
-		})
-		
-	const allFields = true;
-	if (!reqBodyIsValid(req.body, allFields)) {
-		return res.status(400)
-			.send({
-				message: 'Invalid employee data. Fill all fields!'
-			});
-	}
-
-	const employee = new Employee(req.body);
-	employee.save()
-		.then(result => {
-			res.status(200)
-				.send({ data: result });
-		});
+  const employee = new Employee(req.body);
+  employee.save().then((result) => {
+    res.status(201).send({
+      status: 201,
+      data: result,
+    });
+  });
 };
 
 module.exports.editEmployee = async (req, res, next) => {
-	const noAllFields = false;
-	if (reqBodyIsValid(req.body, noAllFields)) {
-		Employee.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (_err, doc) => {
-			if (!doc) {
-				return res.status(404).send({
-					message:  "Employee doesn't exist",
-				});
-			}
-			res.status(200).send(doc);
-		}).then(result => {
-			console.log(result)
-			res.send({ data: result });
-		})
-	} else {
-		res.status(400).send({
-			message: 'Error! Fill some or all fields!'
-		});
-	}
+  Employee.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { new: true },
+    (_err, doc) => {
+      if (!doc) {
+        return res.status(404).send({
+          status: 404,
+          message: "Employee doesn't exist",
+        });
+      }
+      res.status(200).send(doc);
+    }
+  );
 };
 
 module.exports.deleteEmployee = async (req, res, next) => {
-	Employee.deleteOne({ _id: req.query._id }, (err, deletedCount) => {
-		if (err || deletedCount.deletedCount === 0)
-			return res.status(422).send({
-				message: `${err}!`
-			});
+  Employee.deleteOne({ _id: req.params.id }, (err, deletedCount) => {
+    if (err || deletedCount.deletedCount === 0)
+      return res.status(404).send({
+        status: 404,
+        message: "Employee doesn't exist",
+      });
 
-		res.status(200).send({
-			deletedCount,
-			message: `Successfully! DeletedCount is ${deletedCount.deletedCount}`
-		});
-	})
+    res.status(200).send({
+      status: 200,
+    });
+  });
 };
-
-const reqBodyIsValid = (reqBody, fillAllFields) => {
-	if (fillAllFields	//	for create
-		&& reqBody.hasOwnProperty('email')
-		&& reqBody.hasOwnProperty('name')
-		&& reqBody.hasOwnProperty('age')
-		&& reqBody.hasOwnProperty('position')
-		&& reqBody.hasOwnProperty('department')) {
-		const { email, name, age, position, department } = reqBody;
-		if (email
-			&& name
-			&& age
-			&& position
-			&& department) {
-			return true;
-		} else {
-			return false;
-		}
-	} else if (!fillAllFields	//	for edit
-		&& reqBody.hasOwnProperty('_id')
-		&& (reqBody.hasOwnProperty('email')
-			|| reqBody.hasOwnProperty('name')
-			|| reqBody.hasOwnProperty('age')
-			|| reqBody.hasOwnProperty('position'))) {
-		return true;
-	} else {
-		return false;
-	}
-}

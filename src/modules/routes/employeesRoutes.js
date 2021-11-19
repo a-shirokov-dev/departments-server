@@ -12,9 +12,9 @@ const {
   deleteEmployee
 } = require('../controllers/employeesControllers');
 
-routerEmployee.get('/employees', getEmployees);
+routerEmployee.get('/employees/:department', getEmployees);
 routerEmployee.post('/employee/add', employeeValidation, createEmployee);
-routerEmployee.patch('/employee/edit', employeeValidation, editEmployee);
-routerEmployee.delete('/employee/delete', deleteEmployee);
+routerEmployee.patch('/employee/edit/:id', employeeValidation, editEmployee);
+routerEmployee.delete('/employee/delete/:id', deleteEmployee);
 
 module.exports = routerEmployee;

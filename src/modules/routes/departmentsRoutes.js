@@ -14,7 +14,7 @@ const {
 
 routerDepartment.get('/departments', getDepartments);
 routerDepartment.post('/department/add', departmentValidation, createDepartment);
-routerDepartment.patch('/department/edit', departmentValidation, editDepartment);
-routerDepartment.delete('/department/delete', deleteDepartment);
+routerDepartment.patch('/department/edit/:id', departmentValidation, editDepartment);
+routerDepartment.delete('/department/delete/:id', deleteDepartment);
 
 module.exports = routerDepartment;
