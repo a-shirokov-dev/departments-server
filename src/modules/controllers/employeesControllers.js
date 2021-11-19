@@ -1,6 +1,6 @@
 const Employee = require("../../db/models/employees");
 
-module.exports.getEmployees = async (req, res, next) => {
+module.exports.getEmployees = async (req, res) => {
   Employee.find({ department: req.params.department })
     .populate("department")
     .then((result) => {
@@ -11,7 +11,7 @@ module.exports.getEmployees = async (req, res, next) => {
     });
 };
 
-module.exports.createEmployee = async (req, res, next) => {
+module.exports.createEmployee = async (req, res) => {
   const employee = new Employee(req.body);
   employee.save().then((result) => {
     res.status(201).send({
@@ -21,7 +21,7 @@ module.exports.createEmployee = async (req, res, next) => {
   });
 };
 
-module.exports.editEmployee = async (req, res, next) => {
+module.exports.editEmployee = async (req, res) => {
   Employee.findOneAndUpdate(
     { _id: req.params.id },
     req.body,
@@ -38,7 +38,7 @@ module.exports.editEmployee = async (req, res, next) => {
   );
 };
 
-module.exports.deleteEmployee = async (req, res, next) => {
+module.exports.deleteEmployee = async (req, res) => {
   Employee.deleteOne({ _id: req.params.id }, (err, deletedCount) => {
     if (err || deletedCount.deletedCount === 0)
       return res.status(404).send({

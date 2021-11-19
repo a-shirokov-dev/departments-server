@@ -1,7 +1,7 @@
 const Department = require("../../db/models/departments");
 const Employee = require("../../db/models/employees");
 
-module.exports.getDepartments = async (req, res, next) => {
+module.exports.getDepartments = async (_req, res) => {
   Department.find().then((result) => {
     res.status(200).send({
       status: 200,
@@ -10,7 +10,7 @@ module.exports.getDepartments = async (req, res, next) => {
   });
 };
 
-module.exports.createDepartment = async (req, res, next) => {
+module.exports.createDepartment = async (req, res) => {
   Department.find({ name: req.body.name }).then((result) => {
     if (result.length !== 0)
       return res.status(400).send({
@@ -27,7 +27,7 @@ module.exports.createDepartment = async (req, res, next) => {
   });
 };
 
-module.exports.editDepartment = async (req, res, next) => {
+module.exports.editDepartment = async (req, res) => {
   Department.findOneAndUpdate(
     { _id: req.params.id },
     req.body,
@@ -44,7 +44,7 @@ module.exports.editDepartment = async (req, res, next) => {
   );
 };
 
-module.exports.deleteDepartment = async (req, res, next) => {
+module.exports.deleteDepartment = async (req, res) => {
   Employee.find({ department: req.params.id }).then((result) => {
     if (result.length !== 0)
       return res.status(400).send({
@@ -55,7 +55,6 @@ module.exports.deleteDepartment = async (req, res, next) => {
         return res.status(404).send({
           status: 404,
         });
-
       res.status(200).send({
         status: 200,
       });
