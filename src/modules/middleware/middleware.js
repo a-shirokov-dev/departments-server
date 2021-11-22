@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 module.exports.departmentValidation = async (req, _res, next) => {
   const schema = Joi.object({
-    name: Joi.string().required(),
+    name: Joi.string().min(6).max(30).required(),
     description: Joi.string().required()
   })
   const options = {

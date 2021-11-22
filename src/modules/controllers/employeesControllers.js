@@ -3,7 +3,13 @@ const Employee = require("../../db/models/employees");
 module.exports.getEmployees = async (req, res) => {
   Employee.find({ department: req.params.department })
     .populate("department")
-    .then((result) => {
+    .exec((err, result) => {
+      if (err) {
+        return res.status(400).send({
+          status: 400,
+          message: "Get employee error",
+        });
+      }
       res.status(200).send({
         status: 200,
         data: result,
@@ -13,7 +19,13 @@ module.exports.getEmployees = async (req, res) => {
 
 module.exports.createEmployee = async (req, res) => {
   const employee = new Employee(req.body);
-  employee.save().then((result) => {
+  employee.save((err, result) => {
+    if (err) {
+      return res.status(400).send({
+        status: 400,
+        message: "Create employee error",
+      });
+    }
     res.status(201).send({
       status: 201,
       data: result,
@@ -45,7 +57,6 @@ module.exports.deleteEmployee = async (req, res) => {
         status: 404,
         message: "Employee doesn't exist",
       });
-
     res.status(200).send({
       status: 200,
     });
