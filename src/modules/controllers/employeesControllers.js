@@ -19,6 +19,7 @@ module.exports.getEmployees = async (req, res) => {
 
 module.exports.createEmployee = async (req, res) => {
   const employee = new Employee(req.body);
+
   employee.save((err, result) => {
     if (err) {
       return res.status(400).send({
