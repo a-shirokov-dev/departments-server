@@ -17,25 +17,17 @@ module.exports.getDepartments = async (_req, res) => {
 };
 
 module.exports.createDepartment = async (req, res) => {
-  Department.find({ name: req.body.name }).then((result) => {
-    if (result.length !== 0)
+  const department = Department(req.body);
+  department.save((err, result) => {
+    if (err) {
       return res.status(400).send({
         status: 400,
-        message: "Name is already taken!",
+        message: "Create department error",
       });
-    const department = Department(req.body);
-
-    department.save((err, result) => {
-      if (err) {
-        return res.status(400).send({
-          status: 400,
-          message: "Create department error",
-        });
-      }
-      res.status(201).send({
-        status: 201,
-        data: result,
-      });
+    }
+    res.status(201).send({
+      status: 201,
+      data: result,
     });
   });
 };

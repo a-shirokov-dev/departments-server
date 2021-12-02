@@ -11,16 +11,8 @@ const {
 } = require("../controllers/departmentsControllers");
 
 routerDepartment.get("/departments", getDepartments);
-routerDepartment.post(
-  "/department/add",
-  departmentValidation,
-  createDepartment
-);
-routerDepartment.patch(
-  "/department/edit/:id",
-  departmentValidation,
-  editDepartment
-);
+routerDepartment.post("/department/add", departmentValidation, createDepartment);
+routerDepartment.patch("/department/edit/:id", departmentValidation, editDepartment);
 routerDepartment.delete("/department/delete/:id", deleteDepartment);
 
 module.exports = routerDepartment;
