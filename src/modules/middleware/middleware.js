@@ -5,7 +5,7 @@ module.exports.departmentValidation = async (req, _res, next) => {
     name: Joi.string().max(30).required(),
     description: Joi.string(),
   });
-  validationBody(schema, req, next, "Department");
+  validationBody(schema, req, next);
 };
 
 module.exports.employeeValidation = (req, _res, next) => {
@@ -15,25 +15,20 @@ module.exports.employeeValidation = (req, _res, next) => {
     age: Joi.number().required(),
     position: Joi.string().required(),
   });
-  validationBody(schema, req, next, "Employee");
+  validationBody(schema, req, next);
 };
 
-const validationBody = (schema, req, next, entity) => {
+const validationBody = (schema, req, next) => {
   const options = {
     abortEarly: false,
     allowUnknown: true,
     stripUnknown: true,
   };
 
-  const { error, value } = schema.validate(req.body, options);
-
+  const { error } = schema.validate(req.body, options);
   if (error) {
     next(`Validation error: ${error.details.map((x) => x.message).join(", ")}`);
   } else {
-    req.body =
-      entity === "Department"
-        ? value
-        : { ...value, department: req.body.department };
     next();
   }
 };

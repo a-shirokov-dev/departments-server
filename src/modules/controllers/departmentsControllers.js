@@ -18,6 +18,7 @@ module.exports.getDepartments = async (_req, res) => {
 
 module.exports.createDepartment = async (req, res) => {
   const department = Department(req.body);
+
   department.save((err, result) => {
     if (err) {
       return res.status(400).send({
@@ -55,6 +56,7 @@ module.exports.deleteDepartment = async (req, res) => {
       return res.status(400).send({
         message: "Department is not empty!",
       });
+
     Department.deleteOne({ _id: req.params.id }, (err, deletedCount) => {
       if (err || deletedCount.deletedCount === 0)
         return res.status(404).send({
