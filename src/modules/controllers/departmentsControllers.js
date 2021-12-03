@@ -9,6 +9,7 @@ module.exports.getDepartments = async (_req, res) => {
         message: "Get department error",
       });
     }
+
     res.status(200).send({
       status: 200,
       data: result,
@@ -26,6 +27,7 @@ module.exports.createDepartment = async (req, res) => {
         message: "Create department error",
       });
     }
+
     res.status(201).send({
       status: 201,
       data: result,
@@ -45,6 +47,7 @@ module.exports.editDepartment = async (req, res) => {
           message: "Name is required and must be unique",
         });
       }
+
       res.status(200).send(doc);
     }
   );
@@ -63,6 +66,7 @@ module.exports.deleteDepartment = async (req, res) => {
           status: 404,
           message: "Department doesn't exist",
         });
+
       res.status(200).send({
         status: 200,
       });

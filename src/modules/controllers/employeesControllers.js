@@ -10,6 +10,7 @@ module.exports.getEmployees = async (req, res) => {
           message: "Get employee error",
         });
       }
+
       res.status(200).send({
         status: 200,
         data: result,
@@ -27,6 +28,7 @@ module.exports.createEmployee = async (req, res) => {
         message: "Create employee error",
       });
     }
+
     res.status(201).send({
       status: 201,
       data: result,
@@ -46,6 +48,7 @@ module.exports.editEmployee = async (req, res) => {
           message: "Employee doesn't exist",
         });
       }
+
       res.status(200).send(doc);
     }
   );
@@ -58,6 +61,7 @@ module.exports.deleteEmployee = async (req, res) => {
         status: 404,
         message: "Employee doesn't exist",
       });
+
     res.status(200).send({
       status: 200,
     });
